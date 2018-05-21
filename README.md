@@ -6,13 +6,15 @@
 
 ## 使用实例
 
+* tb_resfult
+
 ```php
 <?php
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request; //request操作
-use App\Join; //mode层注入
+use Illuminate\Http\Request;//request操作
+use App\Join;//mode层注入
 use App\Http\libraries\tb_resfult;//封装类的使用
 use Illuminate\Support\Facades\Log;//错误日志
 use App\Http\Requests\JoinRequest;//JoinRequest表单验证
