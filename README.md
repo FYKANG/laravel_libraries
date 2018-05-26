@@ -4,9 +4,13 @@
 
 * [tb_resfult(用于对reafult风格的api进行`删改查`)](#tb_resfult)
 
+* [upload_img(用于接收微信小程序的图片上传)](#upload_img)
+
 ## 使用实例
 
-* tb_resfult
+### tb_resfult
+
+* 使用示例
 
 ```php
 <?php
@@ -113,3 +117,71 @@ class JoinController extends Controller
 }
 
 ```
+
+### upload_img
+
+* 使用示例
+
+```php
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+        try {
+            $upload = new upload_image;
+            $image_url = 'https://test' . $upload->uniqid_img();
+            return $image_url;
+        } catch (\Exception $e) {
+            ##code........
+            try {
+                ##code........
+            } catch (\Illuminate\Database\QueryException $e) {
+                ##code........
+            }
+            return response()->json(['erro' => '图片上传异常'], 422);
+        }
+    }
+```
+
+* laravel中自定义异常捕捉
+  * 在`app\Exceptions`目录中放入`upload_imgException.php`
+  * 异常类编写在upload_imgException.php
+  * laravel中引入异常类(向Handler.php修改添加以下内容)
+
+  ```php
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Exception  $exception
+     * @return \Illuminate\Http\Response
+     */
+    public function render($request, Exception $exception)
+    {
+        // 如果config配置debug为true ==>debug模式的话让laravel自行处理
+        if(config('app.debug')){
+            return parent::render($request, $e);
+        }
+        return parent::render($request, $exception);
+    }
+
+    /**
+     * 新添加的handle函数
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Exception  $exception
+     * @return \Illuminate\Http\Response
+     */
+    public function handle($request, Exception $e){ // 只处理自定义的upload_imgException异常
+        if($e instanceof upload_imgException) {
+            $result = [ "msg" => "", "data" => $e->getMessage(), "status" => 0 ];
+            return response()->json($result);
+        }
+        return parent::render($request, $e);
+    }
+  ```
