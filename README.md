@@ -137,12 +137,7 @@ class JoinController extends Controller
             $image_url = 'https://test' . $upload->uniqid_img();
             return $image_url;
         } catch (\Exception $e) {
-            ##code........
-            try {
-                ##code........
-            } catch (\Illuminate\Database\QueryException $e) {
-                ##code........
-            }
+            #code........
             return response()->json(['erro' => '图片上传异常'], 422);
         }
     }
