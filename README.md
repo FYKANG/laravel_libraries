@@ -160,7 +160,7 @@ class JoinController extends Controller
     {
         // 如果config配置debug为true ==>debug模式的话让laravel自行处理
         if(config('app.debug')){
-            return parent::render($request, $e);
+            return parent::render($request, $exception);
         }
         return parent::render($request, $exception);
     }
